@@ -165,11 +165,11 @@ export const Predictions: React.FC<PredictionsProps> = ({ navigate, currentUser,
           <div className="bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden relative group hover:border-gray-600 transition-all">
               <div className={`h-1.5 w-full ${match.result ? 'bg-gray-600' : (locked ? 'bg-red-500' : 'bg-green-500')}`}></div>
               
-              <div className="p-5">
+              <div className="p-4">
                   <div className="flex justify-between items-start mb-4">
                       <div className="flex flex-col">
-                          <span className="text-yellow-500 font-black text-xl">#{match.betNumber}</span>
-                          <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">{new Date(match.date).toLocaleDateString('fr-FR')} • {new Date(match.date).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}</span>
+                          <span className="text-yellow-500 font-black text-lg">#{match.betNumber}</span>
+                          <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">{new Date(match.date).toLocaleDateString('fr-FR')} • {new Date(match.date).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}</span>
                       </div>
                       {match.result ? (
                           <div className={`px-2 py-1 rounded text-xs font-black uppercase flex items-center ${isWin ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
@@ -189,22 +189,22 @@ export const Predictions: React.FC<PredictionsProps> = ({ navigate, currentUser,
 
                   <div className="flex items-center justify-between mb-2">
                       <div className="flex flex-col items-center w-1/3 text-center group-hover:scale-105 transition-transform duration-300">
-                          <img src={match.homeTeam.flagUrl} alt={match.homeTeam.name} className="w-16 h-16 object-contain mb-3 drop-shadow-lg" />
-                          <span className="font-bold text-white text-sm leading-tight">{match.homeTeam.name}</span>
+                          <img src={match.homeTeam.flagUrl} alt={match.homeTeam.name} className="w-14 h-14 object-contain mb-2 drop-shadow-lg" />
+                          <span className="font-bold text-white text-xs leading-tight">{match.homeTeam.name}</span>
                       </div>
                       
                       <div className="flex flex-col items-center justify-center">
-                          <span className="text-2xl font-black text-gray-600">VS</span>
+                          <span className="text-xl font-black text-gray-600">VS</span>
                           {match.result && (
-                              <div className="mt-1 bg-gray-900 px-3 py-1 rounded border border-gray-700 text-white font-mono font-bold tracking-widest">
+                              <div className="mt-1 bg-gray-900 px-2 py-0.5 rounded border border-gray-700 text-white font-mono font-bold tracking-widest text-sm">
                                   {match.result.homeScore} - {match.result.awayScore}
                               </div>
                           )}
                       </div>
 
                       <div className="flex flex-col items-center w-1/3 text-center group-hover:scale-105 transition-transform duration-300">
-                          <img src={match.awayTeam.flagUrl} alt={match.awayTeam.name} className="w-16 h-16 object-contain mb-3 drop-shadow-lg" />
-                          <span className="font-bold text-white text-sm leading-tight">{match.awayTeam.name}</span>
+                          <img src={match.awayTeam.flagUrl} alt={match.awayTeam.name} className="w-14 h-14 object-contain mb-2 drop-shadow-lg" />
+                          <span className="font-bold text-white text-xs leading-tight">{match.awayTeam.name}</span>
                       </div>
                   </div>
 
@@ -225,17 +225,16 @@ export const Predictions: React.FC<PredictionsProps> = ({ navigate, currentUser,
     <div className="min-h-screen flex flex-col bg-gray-900">
       <Header title="Grille du Jour" currentUser={currentUser} navigate={navigate} backPage={Page.DASHBOARD} />
       
-      <main className="flex-grow container mx-auto p-4 md:p-6 pb-24">
-        <AdBanner pageName="predictions" settings={settings} className="mb-6" />
+      <main className="flex-grow container mx-auto p-2 md:p-4 pb-24">
+        <AdBanner pageName="predictions" settings={settings} className="mb-4" />
         
-        <div className="bg-yellow-500/10 border-l-4 border-yellow-500 p-4 mb-6 rounded-r-lg shadow-sm">
+        <div className="bg-yellow-500/10 border-l-4 border-yellow-500 p-3 mb-6 rounded-r-lg shadow-sm">
             <div className="flex items-start">
-                <ClockIcon className="w-6 h-6 text-yellow-500 mr-3 flex-shrink-0" />
+                <ClockIcon className="w-5 h-5 text-yellow-500 mr-2 flex-shrink-0" />
                 <div>
-                    <h3 className="text-yellow-500 font-bold uppercase text-sm mb-1">Règles de la Grille</h3>
-                    <p className="text-gray-300 text-sm leading-relaxed">
-                        Pronostiquez les 10 matchs ci-dessous. Les paris ferment 1h avant chaque match.
-                        Utilisez les doubles chances (1X, X2) pour maximiser vos gains !
+                    <h3 className="text-yellow-500 font-bold uppercase text-xs mb-1">Règles de la Grille</h3>
+                    <p className="text-gray-300 text-xs leading-relaxed">
+                        Pronostiquez les 10 matchs. Fermeture 1h avant. Doubles chances (1X, X2) autorisées.
                     </p>
                 </div>
             </div>
@@ -250,14 +249,14 @@ export const Predictions: React.FC<PredictionsProps> = ({ navigate, currentUser,
                 <p className="text-gray-400 max-w-xs mx-auto">Revenez un peu plus tard pour découvrir les prochains matchs à pronostiquer.</p>
              </div>
         ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {gridMatches.map((match) => (
                     <MatchCard key={match.id} match={match} />
                 ))}
             </div>
         )}
         
-        <div className="mt-8">
+        <div className="mt-6">
             <AdCarousel ads={ads} />
         </div>
       </main>
@@ -267,7 +266,7 @@ export const Predictions: React.FC<PredictionsProps> = ({ navigate, currentUser,
             <button
               onClick={handleInitialSubmit}
               disabled={isSubmitting || gridMatches.length === 0}
-              className={`w-full py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-black uppercase tracking-wider rounded-xl shadow-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center ${isSubmitting ? 'opacity-75 cursor-wait' : ''}`}
+              className={`w-full py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-black uppercase tracking-wider rounded-xl shadow-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center ${isSubmitting ? 'opacity-75 cursor-wait' : ''}`}
             >
               {isSubmitting ? (
                   <>

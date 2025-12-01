@@ -44,11 +44,11 @@ export const Contact: React.FC<ContactProps> = ({ navigate, currentUser, message
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-900">
       <Header title="Contact (Chat Direct)" currentUser={currentUser} navigate={navigate} backPage={Page.DASHBOARD} />
-      <main className="flex-grow container mx-auto p-4 flex flex-col overflow-hidden">
+      <main className="flex-grow container mx-auto p-4 flex flex-col overflow-hidden pb-20">
         <AdBanner pageName="contact" settings={settings} className="mb-4 flex-shrink-0" />
-        <div className="flex-grow bg-gray-800 rounded-2xl shadow-lg p-4 space-y-4 overflow-y-auto">
+        <div className="flex-grow bg-gray-800 rounded-2xl shadow-lg p-4 space-y-4 overflow-y-auto min-h-[50vh]">
           {userMessages.map(msg => (
             <div key={msg.id} className={`flex items-start gap-3 ${!msg.isFromAdmin ? 'flex-row-reverse' : ''}`}>
               <img src={msg.isFromAdmin ? adminUser.profilePictureUrl : msg.user.profilePictureUrl} alt={msg.user.name} className="w-10 h-10 rounded-full object-cover" />
@@ -57,7 +57,7 @@ export const Contact: React.FC<ContactProps> = ({ navigate, currentUser, message
                    <span className="font-semibold text-sm">{msg.isFromAdmin ? adminUser.name : msg.user.name}</span>
                    <span className="text-xs text-gray-400">{new Date(msg.timestamp).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</span>
                 </div>
-                <p className="text-white">{msg.message}</p>
+                <p className="text-white break-words">{msg.message}</p>
               </div>
             </div>
           ))}
@@ -67,7 +67,7 @@ export const Contact: React.FC<ContactProps> = ({ navigate, currentUser, message
           <AdCarousel ads={ads} />
         </div>
       </main>
-      <footer className="sticky bottom-0 bg-gray-900 p-4">
+      <footer className="fixed bottom-0 left-0 right-0 bg-gray-900 p-4 border-t border-gray-800 z-30">
         <div className="container mx-auto flex items-center space-x-2">
           <input
             type="text"

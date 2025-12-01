@@ -19,7 +19,8 @@ export const AdBanner: React.FC<AdBannerProps> = ({ pageName, settings, classNam
   useEffect(() => {
     // Injection dynamique du script Google AdSense si un ID Client est présent
     if (clientId && clientId !== 'ca-pub-XXXXXXXXXXXXXXXX') {
-        const existingScript = document.getElementById('adsense-script');
+        // On vérifie si le script existe déjà (soit par ID injecté dynamiquement, soit par src via index.html)
+        const existingScript = document.getElementById('adsense-script') || document.querySelector('script[src*="adsbygoogle.js"]');
         
         if (!existingScript) {
             const script = document.createElement('script');
@@ -54,7 +55,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({ pageName, settings, classNam
   }
 
   return (
-    <div className={`w-full flex justify-center my-4 overflow-hidden ${className}`}>
+    <div className={`w-full flex justify-center mb-4 overflow-hidden ${className}`}>
         {/* Conteneur AdSense */}
         <div className="text-center w-full" style={{ minHeight: '90px' }}>
             <ins className="adsbygoogle"

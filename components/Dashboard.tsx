@@ -129,9 +129,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ navigate, onLogout, curren
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      <header className="bg-gray-800 p-4 shadow-lg border-b border-gray-700">
+      <header className="bg-gray-800 py-2 px-4 shadow-lg border-b border-gray-700">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-black text-yellow-400 uppercase tracking-wider">
+          <h1 className="text-lg font-black text-yellow-400 uppercase tracking-wider">
             Prediction Foot
           </h1>
           <button onClick={onLogout} className="p-2 text-gray-400 hover:text-red-400 transition-colors">
@@ -140,10 +140,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ navigate, onLogout, curren
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto p-4 sm:p-6 flex flex-col items-center">
-        <AdBanner pageName="home" settings={settings} className="mb-6" />
+      <main className="flex-grow container mx-auto p-2 sm:p-4 flex flex-col items-center">
+        <AdBanner pageName="home" settings={settings} className="mb-4" />
 
-        <div className="w-full max-w-md bg-gray-800 rounded-2xl shadow-xl p-6 mb-8 border border-gray-700 relative overflow-hidden">
+        <div className="w-full max-w-md bg-gray-800 rounded-2xl shadow-xl p-6 mb-6 border border-gray-700 relative overflow-hidden">
            <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-r from-yellow-500 to-yellow-600 opacity-20"></div>
            
            <div className="relative flex flex-col items-center">
@@ -185,14 +185,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ navigate, onLogout, curren
            </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-4xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 w-full max-w-4xl">
             {menuItems.map((item, index) => (
                 <button
                     key={index}
                     onClick={() => navigate(item.page)}
-                    className={`${item.colorClass} relative p-4 rounded-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center group h-32 overflow-hidden`}
+                    className={`${item.colorClass} relative p-4 rounded-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center group h-28 overflow-hidden`}
                 >
-                    {/* Effet de brillance */}
                     <div className="absolute top-0 right-0 -mt-2 -mr-2 w-16 h-16 bg-white opacity-10 rounded-full blur-xl transform group-hover:scale-150 transition-transform"></div>
 
                     {item.count !== undefined && item.count > 0 && (
@@ -200,13 +199,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ navigate, onLogout, curren
                             {item.count}
                         </div>
                     )}
-                    <item.icon className="w-10 h-10 text-white mb-2 drop-shadow-md group-hover:scale-110 transition-transform relative z-10" />
-                    <span className="text-white font-bold text-xs uppercase tracking-wider text-center relative z-10">{item.label}</span>
+                    <item.icon className="w-8 h-8 text-white mb-2 drop-shadow-md group-hover:scale-110 transition-transform relative z-10" />
+                    <span className="text-white font-bold text-[10px] uppercase tracking-wider text-center relative z-10">{item.label}</span>
                 </button>
             ))}
         </div>
 
-        <div className="mt-8 w-full max-w-4xl">
+        <div className="mt-6 w-full max-w-4xl">
             <AdCarousel ads={ads} />
         </div>
       </main>
