@@ -11,6 +11,7 @@ export interface User {
   gender: 'Male' | 'Female' | 'Other';
   phone: string;
   isAdmin: boolean;
+  lastLogin?: string; // Date de dernière connexion pour les statistiques
 }
 
 export type PredictionValue = '1' | 'X' | '2' | '1X' | 'X2';

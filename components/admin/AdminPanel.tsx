@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { ArrowLeftOnRectangleIcon, BellIcon, ChartPieIcon, PuzzlePieceIcon, DocumentTextIcon, UsersIcon, PhotoIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftOnRectangleIcon, BellIcon, ChartPieIcon, PuzzlePieceIcon, DocumentTextIcon, UsersIcon, PhotoIcon, Cog6ToothIcon, PresentationChartLineIcon } from '@heroicons/react/24/outline';
 import { MatchManagement } from './MatchManagement';
 import { ContentManagement } from './ContentManagement';
 import { UserManagement } from './UserManagement';
 import { AdsManagement } from './AdsManagement';
 import { AdminDashboard } from './AdminDashboard';
 import { SettingsManagement } from './SettingsManagement';
+import { Statistics } from './Statistics';
 import type { User, Match, Ad, ForumMessage, Rule, Info, ContactMessage, Prediction, AppSettings } from '../../types';
 import { AdCarousel } from '../common/AdCarousel';
 import { AdBanner } from '../common/AdBanner';
@@ -25,7 +26,7 @@ interface AdminPanelProps {
     settings?: AppSettings;
 }
 
-type AdminTab = 'dashboard' | 'matches' | 'content' | 'users' | 'ads' | 'settings';
+type AdminTab = 'dashboard' | 'matches' | 'content' | 'users' | 'ads' | 'settings' | 'statistics';
 
 export const AdminPanel: React.FC<AdminPanelProps> = (props) => {
     const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -41,6 +42,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = (props) => {
                     forumMessages={props.forumMessages}
                     onResetPredictions={props.actions.resetCompetition}
                 />;
+            case 'statistics':
+                return <Statistics users={props.users} />;
             case 'matches':
                 return <MatchManagement matches={props.matches} actions={props.actions} />;
             case 'content':
@@ -66,13 +69,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = (props) => {
             case 'content': return 'Contenu';
             case 'users': return 'Utilisateurs';
             case 'dashboard': return 'Tableau de Bord';
+            case 'statistics': return 'Statistiques & Trafic';
             default: return activeTab;
         }
     }
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex">
-            <nav className="w-16 md:w-64 bg-gray-800 p-2 md:p-4 flex flex-col justify-between">
+            <nav className="w-16 md:w-64 bg-gray-800 p-2 md:p-4 flex flex-col justify-between shadow-xl z-20">
                 <div>
                     <div className="flex items-center justify-center md:justify-start mb-10">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-10 h-10 text-yellow-400">
@@ -82,6 +86,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = (props) => {
                     </div>
                     <ul className="space-y-2">
                         <TabButton label="Tableau de Bord" icon={ChartPieIcon} isActive={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+                        <TabButton label="Statistiques" icon={PresentationChartLineIcon} isActive={activeTab === 'statistics'} onClick={() => setActiveTab('statistics')} />
                         <TabButton label="Matchs" icon={PuzzlePieceIcon} isActive={activeTab === 'matches'} onClick={() => setActiveTab('matches')} />
                         <TabButton label="Contenu" icon={DocumentTextIcon} isActive={activeTab === 'content'} onClick={() => setActiveTab('content')} />
                         <TabButton label="Utilisateurs" icon={UsersIcon} isActive={activeTab === 'users'} onClick={() => setActiveTab('users')} />
@@ -95,11 +100,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = (props) => {
                 </button>
             </nav>
             <main className="flex-1 flex flex-col max-h-screen overflow-hidden">
-                <header className="bg-gray-800/50 p-4 flex justify-between items-center flex-shrink-0">
+                <header className="bg-gray-800/50 p-4 flex justify-between items-center flex-shrink-0 backdrop-blur-md border-b border-gray-700">
                     <h2 className="text-2xl font-bold capitalize">{getTitle()}</h2>
                     <div className="flex items-center space-x-4">
                         <BellIcon className="w-6 h-6 text-gray-400" />
-                        <img src="https://picsum.photos/seed/admin/40" className="w-10 h-10 rounded-full" />
+                        <img src="https://picsum.photos/seed/admin/40" className="w-10 h-10 rounded-full border border-gray-600" />
                     </div>
                 </header>
                 <div className="flex-1 p-6 overflow-y-auto">
@@ -115,7 +120,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = (props) => {
 
 const TabButton: React.FC<{ label: string; icon: React.ElementType; isActive: boolean; onClick: () => void; }> = ({ label, icon: Icon, isActive, onClick }) => (
     <li>
-        <button onClick={onClick} className={`w-full flex items-center justify-center md:justify-start p-3 rounded-lg transition-colors ${isActive ? 'bg-green-600 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}>
+        <button onClick={onClick} className={`w-full flex items-center justify-center md:justify-start p-3 rounded-lg transition-colors ${isActive ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-bold shadow-lg' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}>
             <Icon className="w-6 h-6" />
             <span className="ml-3 hidden md:block">{label}</span>
         </button>

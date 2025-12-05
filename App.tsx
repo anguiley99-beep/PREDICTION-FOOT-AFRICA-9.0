@@ -13,7 +13,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { useAppData } from './hooks/useAppData'; 
 import { auth, db } from './firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import type { User, Match } from './types';
 
@@ -48,29 +48,48 @@ const App: React.FC = () => {
     if (auth) {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
+                let userData: User | null = null;
                 if (db) {
                     try {
-                        const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+                        const userRef = doc(db, "users", firebaseUser.uid);
+                        const userDoc = await getDoc(userRef);
+                        
                         if (userDoc.exists()) {
-                            setCurrentUser({ ...userDoc.data(), id: firebaseUser.uid } as User);
+                            // TRACKING: Mise à jour du lastLogin pour les statistiques
+                            const now = new Date().toISOString();
+                            await updateDoc(userRef, { lastLogin: now });
+
+                            userData = { ...userDoc.data(), id: firebaseUser.uid, lastLogin: now } as User;
                         } else {
-                            throw new Error("User doc not found");
+                           // Gestion cas doc manquant (rare)
+                           throw new Error("User doc not found");
                         }
                     } catch (err) {
-                        console.error("Erreur fetch user (Mode Hors Ligne activé):", err);
-                        setCurrentUser({
+                        console.error("Erreur fetch user (Mode Hors Ligne ou Doc manquant):", err);
+                        // Fallback simple
+                        userData = {
                             id: firebaseUser.uid,
                             email: firebaseUser.email || '',
-                            name: firebaseUser.displayName || 'Joueur Hors Ligne',
+                            name: firebaseUser.displayName || 'Joueur',
                             isAdmin: false,
                             profilePictureUrl: firebaseUser.photoURL || 'https://picsum.photos/seed/default/200',
                             country: { name: 'Inconnu', code: 'un'},
                             gender: 'Other',
                             phone: ''
-                        });
+                        };
                     }
                 }
-                if (currentPage === Page.AUTH) setCurrentPage(Page.DASHBOARD);
+
+                if (userData) {
+                    setCurrentUser(userData);
+                    // Redirection intelligente basée sur le rôle
+                    setCurrentPage(prevPage => {
+                        if (prevPage === Page.AUTH) {
+                            return userData?.isAdmin ? Page.ADMIN : Page.DASHBOARD;
+                        }
+                        return prevPage;
+                    });
+                }
             } else {
                 setCurrentUser(null);
                 setCurrentPage(Page.AUTH);
@@ -198,7 +217,6 @@ const App: React.FC = () => {
             settings={settings}
           />;
         }
-        setCurrentPage(Page.DASHBOARD);
         return <Dashboard navigate={navigate} onLogout={handleLogout} currentUser={currentUser} ads={ads} actions={actions} onUpdateUser={handleUpdateUser} notificationCounts={notifications} settings={settings} />;
       default:
         return <Dashboard navigate={navigate} onLogout={handleLogout} currentUser={currentUser} ads={ads} actions={actions} onUpdateUser={handleUpdateUser} notificationCounts={notifications} settings={settings} />;
